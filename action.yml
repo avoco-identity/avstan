@@ -1,0 +1,12 @@
+name: 'phpstan container'
+description: 'PHPSTAN run'
+inputs:
+    arguments:
+        description: 'Arguments to add to PHPStan CLI'
+        required: false
+        default: ''
+runs:
+    using: 'docker'
+    image: 'Dockerfile'
+    args:
+        - ${{ inputs.arguments }}
