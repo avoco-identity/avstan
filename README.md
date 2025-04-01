@@ -7,7 +7,7 @@ This GitHub Action performs static code analysis on your PHP codebase using [PHP
 - Seamless PHPStan integration in GitHub Actions workflows
 - Automatic detection of PHPStan configuration files
 - Optimized composer dependency installation with automatic platform requirement handling
-- Complete set of PHP extensions pre-installed (zip, intl, bcmath, mbstring, xml, pdo, pdo_mysql, mongodb)
+- Complete set of PHP extensions pre-installed (zip, intl, bcmath, mbstring, xml, pdo, pdo_mysql, mongodb 1.12.0)
 - Configurable analysis level (0-9)
 - Default configuration with common error suppressions for external libraries
 - Customizable memory limits and autoloading options
@@ -97,6 +97,8 @@ You can override this by providing your own configuration file.
 ## Technical details
 
 - PHP version: 7.4
-- Pre-installed extensions: zip, intl, bcmath, mbstring, xml, pdo, pdo_mysql, mongodb
+- Pre-installed extensions: 
+  - zip, intl, bcmath, mbstring, xml, pdo, pdo_mysql
+  - mongodb 1.12.0 (last version compatible with PHP 7.4)
 - Intelligent composer dependency handling with progressive fallbacks
 - Optimized for GitHub Actions build environment with parallel extension compilation 

@@ -3,6 +3,7 @@ set -e
 
 PHP_FULL_VERSION=$(php -r 'echo phpversion();')
 PHP_EXTENSIONS=$(php -r 'echo implode(", ", get_loaded_extensions());')
+MONGODB_VERSION=$(php -r 'if(extension_loaded("mongodb")) echo phpversion("mongodb"); else echo "not installed";')
 
 # Make sure we're in the project directory
 cd "${GITHUB_WORKSPACE:-/github/workspace}"
@@ -108,6 +109,7 @@ fi
 echo "## PHP Environment:"
 echo "PHP Version: ${PHP_FULL_VERSION}"
 echo "PHP Extensions: ${PHP_EXTENSIONS}"
+echo "MongoDB Extension Version: ${MONGODB_VERSION}"
 echo "## Running PHPStan with arguments «${ARGUMENTS}»"
 
 # Run PHPStan with configured memory limit

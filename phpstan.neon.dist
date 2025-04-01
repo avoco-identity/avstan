@@ -4,25 +4,28 @@ parameters:
     
     # Ignore errors about the MongoDB classes
     ignoreErrors:
+        # MongoDB classes
         - '#Call to method [a-zA-Z0-9\\_]+\(\) on an unknown class MongoDb\\Collection#'
         - '#Parameter .+ has invalid type MongoDb\\Collection#'
         - '#Method .+ has invalid return type MongoDb\\Collection#'
         - '#Property .+ has unknown class MongoDb\\Collection as its type#'
         
-        # Ignore Yoti library errors
+        # Yoti library
         - '#Instantiated class Yoti\\[a-zA-Z0-9\\_]+ not found#'
         - '#Call to method [a-zA-Z0-9\\_]+\(\) on an unknown class Yoti\\[a-zA-Z0-9\\_]+#'
         - '#Caught class Yoti\\Exception\\[a-zA-Z0-9\\_]+ not found#'
         - '#PHPDoc tag @var for variable \$[a-zA-Z0-9\\_]+ contains unknown class Yoti\\[a-zA-Z0-9\\_]+#'
         
-        # Ignore TCPDF library errors
+        # TCPDF library
         - '#Constant PDF_[A-Z_]+ not found#'
         - '#Call to method [a-zA-Z0-9\\_]+\(\) on an unknown class tcpdf\\tcpdf#'
         - '#Instantiated class tcpdf\\tcpdf not found#'
         
-        # Ignore phpseclib sign/verify method errors
+        # phpseclib methods
         - '#Call to an undefined method phpseclib3\\Crypt\\Common\\AsymmetricKey::(sign|verify)\(\)#'
+        
+        # MongoDB extension
+        - '#mongodb/mongodb .+ requires ext-mongodb#'
     
     # Common PHP settings
-    checkMissingIterableValueType: false  # Don't require array value types
     treatPhpDocTypesAsCertain: false      # Don't be too strict with PHPDoc types 
