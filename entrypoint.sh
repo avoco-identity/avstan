@@ -6,6 +6,9 @@ PHP_FULL_VERSION=$(php -r 'echo phpversion();')
 # Make sure we're in the project directory
 cd "${GITHUB_WORKSPACE:-/github/workspace}"
 
+# Set Git ownership issue workaround
+git config --global --add safe.directory "${GITHUB_WORKSPACE:-/github/workspace}"
+
 # Check if we're in a valid project directory
 if [ -z "$(ls)" ]; then
   echo "No code found. Did you checkout with «actions/checkout» ?"
@@ -33,7 +36,7 @@ fi
 # Composer auto-installation if enabled
 if [ "${INSTALL_DEPENDENCIES}" = "true" ] && [ -f composer.json ] && ([ ! -d vendor/ ] || [ ! -f vendor/autoload.php ]); then
   echo "INFO: composer.json found but no vendor directory. Running composer install..."
-  composer install --no-dev --no-progress --prefer-dist
+  composer install --no-dev --no-progress --prefer-dist --ignore-platform-reqs
 fi
 
 # Warning about missing autoload
@@ -41,7 +44,7 @@ if [ ! -d vendor/ ] || [ ! -f vendor/autoload.php ]; then
   echo "WARNING: No autoload detected. You may get errors from PHPStan due to missing autoload."
   echo "Consider adding this snippet to your workflow:
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress"
+        run: composer install --prefer-dist --no-progress --ignore-platform-reqs"
 fi
 
 # Custom autoload file
