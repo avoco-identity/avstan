@@ -6,10 +6,12 @@ This GitHub Action performs static code analysis on your PHP codebase using [PHP
 
 - Seamless PHPStan integration in GitHub Actions workflows
 - Automatic detection of PHPStan configuration files
-- Optional automatic composer dependency installation
+- Optional automatic composer dependency installation (with --ignore-platform-reqs flag)
+- MongoDB extension pre-installed for MongoDB dependency compatibility
 - Configurable analysis level
 - Default configuration with common error suppressions for external libraries
 - Customizable memory limits and autoloading
+- Handles Git repository ownership issues automatically
 
 ## Usage
 
@@ -73,7 +75,7 @@ steps:
 
 ```yaml
 - name: Install dependencies manually
-  run: composer install --prefer-dist --no-progress
+  run: composer install --prefer-dist --no-progress --ignore-platform-reqs
 
 - name: PHPStan
   uses: avoco-identity/avstan@main
@@ -90,4 +92,10 @@ This action includes a default PHPStan configuration that ignores common errors 
 - Yoti library classes
 - phpseclib sign/verify methods
 
-You can override this by providing your own configuration file. 
+You can override this by providing your own configuration file.
+
+## Technical details
+
+- PHP version: 7.4
+- Pre-installed extensions: zip, mongodb
+- Composer flags: Using `--ignore-platform-reqs` to handle version incompatibilities 

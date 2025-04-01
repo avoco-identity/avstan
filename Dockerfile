@@ -5,7 +5,17 @@ RUN apt-get update && apt-get install -y \
     git \
     unzip \
     libzip-dev \
-    && docker-php-ext-install zip \
+    libicu-dev \
+    libxml2-dev \
+    libonig-dev \
+    && docker-php-ext-install \
+       zip \
+       intl \
+       bcmath \
+       mbstring \
+       xml \
+       pdo \
+       pdo_mysql \
     && rm -rf /var/lib/apt/lists/*
 
 # Install MongoDB extension
