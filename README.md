@@ -7,7 +7,7 @@ This GitHub Action performs static code analysis on your PHP codebase using [PHP
 - Seamless PHPStan integration in GitHub Actions workflows
 - Automatic detection of PHPStan configuration files
 - Optional automatic composer dependency installation (with --ignore-platform-reqs flag)
-- MongoDB extension pre-installed for MongoDB dependency compatibility
+- Common PHP extensions pre-installed (zip, intl, bcmath, mbstring, xml, MongoDB, PDO)
 - Configurable analysis level
 - Default configuration with common error suppressions for external libraries
 - Customizable memory limits and autoloading
@@ -97,5 +97,5 @@ You can override this by providing your own configuration file.
 ## Technical details
 
 - PHP version: 7.4
-- Pre-installed extensions: zip, mongodb
+- Pre-installed extensions: zip, intl, bcmath, mbstring, xml, pdo, pdo_mysql, mongodb
 - Composer flags: Using `--ignore-platform-reqs` to handle version incompatibilities 
