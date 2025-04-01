@@ -2,6 +2,7 @@
 set -e
 
 PHP_FULL_VERSION=$(php -r 'echo phpversion();')
+PHP_EXTENSIONS=$(php -r 'echo implode(", ", get_loaded_extensions());')
 
 # Make sure we're in the project directory
 cd "${GITHUB_WORKSPACE:-/github/workspace}"
@@ -36,7 +37,26 @@ fi
 # Composer auto-installation if enabled
 if [ "${INSTALL_DEPENDENCIES}" = "true" ] && [ -f composer.json ] && ([ ! -d vendor/ ] || [ ! -f vendor/autoload.php ]); then
   echo "INFO: composer.json found but no vendor directory. Running composer install..."
-  composer install --no-dev --no-progress --prefer-dist --ignore-platform-reqs
+  
+  # Try composer install with increasing levels of platform ignoring
+  if composer install --no-dev --no-progress --prefer-dist; then
+    echo "INFO: Composer install completed successfully."
+  elif composer install --no-dev --no-progress --prefer-dist --ignore-platform-reqs; then
+    echo "INFO: Composer install completed with --ignore-platform-reqs."
+  else
+    echo "INFO: Trying composer install with more specific ignore flags..."
+    # Try the most aggressive approach
+    composer install --no-dev --no-progress --prefer-dist --ignore-platform-reqs \
+      --ignore-platform-req=ext-mongodb \
+      --ignore-platform-req=php \
+      --no-scripts
+    
+    if [ $? -ne 0 ]; then
+      echo "WARNING: Composer install failed. Continuing anyway, but PHPStan may not work correctly."
+    else
+      echo "INFO: Composer install completed with additional ignore flags."
+    fi
+  fi
 fi
 
 # Warning about missing autoload
@@ -83,10 +103,12 @@ else
   export PHP_MEMORY_LIMIT="-1"
 fi
 
-# Show PHPStan version
+# Show PHPStan version and environment info
 /phpstan -V
-echo "## Running PHPStan with arguments «${ARGUMENTS}»"
+echo "## PHP Environment:"
 echo "PHP Version: ${PHP_FULL_VERSION}"
+echo "PHP Extensions: ${PHP_EXTENSIONS}"
+echo "## Running PHPStan with arguments «${ARGUMENTS}»"
 
 # Run PHPStan with configured memory limit
 php -d memory_limit=${PHP_MEMORY_LIMIT} /phpstan ${ARGUMENTS}

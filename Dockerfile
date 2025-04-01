@@ -1,6 +1,7 @@
 FROM php:7.4-cli
 
 # Install dependencies and PHP extensions needed for typical projects
+# Use multi-stage installation and parallelization to speed up build
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -8,7 +9,8 @@ RUN apt-get update && apt-get install -y \
     libicu-dev \
     libxml2-dev \
     libonig-dev \
-    && docker-php-ext-install \
+    && docker-php-ext-configure intl \
+    && docker-php-ext-install -j$(nproc) \
        zip \
        intl \
        bcmath \
