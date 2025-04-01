@@ -1,12 +1,48 @@
-name: 'phpstan container'
-description: 'PHPSTAN run'
+name: 'PHPStan Static Analysis'
+description: 'Run PHPStan static analysis on your PHP code with advanced configuration options'
+branding:
+  icon: 'check-circle'
+  color: 'blue'
+
 inputs:
-    arguments:
-        description: 'Arguments to add to PHPStan CLI'
-        required: false
-        default: ''
+  arguments:
+    description: 'Arguments to pass to PHPStan CLI (e.g., paths to analyze, custom parameters)'
+    required: false
+    default: ''
+    
+  autoload_file:
+    description: 'Path to autoload file if not using standard vendor/autoload.php'
+    required: false
+    default: ''
+    
+  level:
+    description: 'PHPStan rule level (0-9, higher = stricter)'
+    required: false
+    default: '2'
+    
+  configuration:
+    description: 'Path to your PHPStan configuration file (default: phpstan.neon or phpstan.neon.dist)'
+    required: false
+    default: ''
+    
+  memory_limit:
+    description: 'PHP memory limit for PHPStan (default: -1 for unlimited)'
+    required: false
+    default: '-1'
+    
+  install_dependencies:
+    description: 'Whether to automatically run composer install if vendor directory is missing'
+    required: false
+    default: 'true'
+
 runs:
-    using: 'docker'
-    image: 'Dockerfile'
-    args:
-        - ${{ inputs.arguments }}
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.arguments }}
+  env:
+    PHPSTAN_AUTOLOAD_FILE: ${{ inputs.autoload_file }}
+    PHPSTAN_LEVEL: ${{ inputs.level }}
+    PHPSTAN_CONFIG: ${{ inputs.configuration }}
+    PHP_MEMORY_LIMIT: ${{ inputs.memory_limit }}
+    INSTALL_DEPENDENCIES: ${{ inputs.install_dependencies }}
