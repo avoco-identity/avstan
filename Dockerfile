@@ -20,8 +20,9 @@ RUN apt-get update && apt-get install -y \
        pdo_mysql \
     && rm -rf /var/lib/apt/lists/*
 
-# Install MongoDB extension
-RUN pecl install mongodb && \
+# Install MongoDB extension version 1.12.0 (last version compatible with PHP 7.4)
+RUN pecl channel-update pecl.php.net && \
+    pecl install mongodb-1.12.0 && \
     docker-php-ext-enable mongodb
 
 # Install Composer
